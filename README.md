@@ -1,7 +1,7 @@
 <h1>Jogo do Número Secreto</h1>
 
 <h2>Sobre</h2>
-<p>Projeto da Alura desenvolvido durante a aprendizagem de lógica de programação utilizando o JavaScript</p>
+<p>Meu primeiro projeto com a Alura desenvolvido durante a aprendizagem de lógica de programação utilizando o JavaScript</p>
 
 ## Tecnologias
 <div>

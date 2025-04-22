@@ -1,7 +1,8 @@
 let listaDeNumerosSorteados = [];
-let numeroLimite = 10;
+let numeroLimite = 15;
 let numeroSecreto = gerarNumeroAleatorio();
 let tentativas = 1;
+let limiteTentativas = 5;
 
 function exibirTextoNaTela(tag, texto) {
     let campo = document.querySelector(tag);
@@ -11,34 +12,39 @@ function exibirTextoNaTela(tag, texto) {
 
 function exibirMensagemInicial() {
     exibirTextoNaTela('h1', 'Jogo do número secreto');
-    exibirTextoNaTela('p', 'Escolha um número entre 1 e 10');
+    exibirTextoNaTela('p', 'Escolha um número entre 1 e ' + numeroLimite);
 }
 
 exibirMensagemInicial();
+inicializacaoDoJogo();
 
 function verificarChute() {
     let chute = document.querySelector('input').value;
     
-    if(chute < 1 || chute > numeroLimite){
-        alert("Digite um número válido!");
+    if (chute < 1 || chute > numeroLimite){
+        alert ('Digite um número válido!');
         limparCampo();
         return;
     }
-
     if (chute == numeroSecreto) {
         exibirTextoNaTela('h1', 'Acertou!');
         let palavraTentativa = tentativas > 1 ? 'tentativas' : 'tentativa';
         let mensagemTentativas = `Você descobriu o número secreto com ${tentativas} ${palavraTentativa}!`;
         exibirTextoNaTela('p', mensagemTentativas);
-        document.getElementById('reiniciar').removeAttribute('disabled');
+        desabilitarChuteEHabilitarReiniciar();
     } else {
+        let avisoTentativas = `Tentativa ${tentativas} de ${limiteTentativas}.`;
+
         if (chute > numeroSecreto) {
-            exibirTextoNaTela('p', 'O número secreto é menor');
+            exibirTextoNaTela('p', 'O número secreto é menor. ' + avisoTentativas);
         } else {
-            exibirTextoNaTela('p', 'O número secreto é maior');
+            exibirTextoNaTela('p', 'O número secreto é maior. ' + avisoTentativas);
         }
         tentativas++;
         limparCampo();
+    }
+    if (tentativas > limiteTentativas){
+        derrotaPorExcessoDeTentativas();
     }
 }
 
@@ -69,11 +75,21 @@ function reiniciarJogo() {
     tentativas = 1;
     exibirMensagemInicial();
     document.getElementById('reiniciar').setAttribute('disabled', true)
+    inicializacaoDoJogo();
+    
 }
 
+function inicializacaoDoJogo(){
+    document.getElementById('chutar').removeAttribute('disabled');
+}
 
+function derrotaPorExcessoDeTentativas(){
+    let textoDeDerrota = `Suas tentativas acabaram. O número secreto era ${numeroSecreto}.`
+    exibirTextoNaTela('p', textoDeDerrota);
+    desabilitarChuteEHabilitarReiniciar();
+}
 
-
-
-
-
+function desabilitarChuteEHabilitarReiniciar(){
+    document.getElementById('chutar').setAttribute('disabled', true);
+    document.getElementById('reiniciar').removeAttribute('disabled');
+}
